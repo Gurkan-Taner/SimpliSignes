@@ -30,16 +30,14 @@ class TranslatePage extends StatelessWidget {
                     Expanded(
                         flex: 1,
                         child: Container(
-                          alignment: Alignment.centerRight,
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 13.0, bottom: 13.0),
-                            child: Image(
-                              fit: BoxFit.fitHeight,
-                              image: AssetImage("assets/images/account.png")
-                            ),
-                          )
-                        )
-                      ),
+                            alignment: Alignment.centerRight,
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 13.0, bottom: 13.0),
+                              child: Image(
+                                  fit: BoxFit.fitHeight,
+                                  image:
+                                      AssetImage("assets/images/account.png")),
+                            ))),
                   ],
                 ),
               ),
@@ -53,28 +51,25 @@ class TranslatePage extends StatelessWidget {
                   color: const Color(0xff4CB5CB),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                   child: Row(
                     children: [
                       Expanded(
                         child: InkWell(
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: Colors.white),
-                            ),
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Text(
-                                "LSF",
-                                style: GoogleFonts.lexendDeca(
-                                  fontSize: 20.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(color: Colors.white),
+                              ),
+                              alignment: Alignment.center,
+                              child: Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text("LSF",
+                                      style: GoogleFonts.lexendDeca(
+                                        fontSize: 20.0,
                                         color: Colors.white,
-                                )
-                              )
-                            )
-                          ),
+                                      )))),
                         ),
                       ),
                       Padding(
@@ -95,22 +90,37 @@ class TranslatePage extends StatelessWidget {
                                   padding: EdgeInsets.all(5.0),
                                   child: Text("Français",
                                       style: GoogleFonts.lexendDeca(
-                                          fontSize: 20.0,
-                                          color: Colors.white,
-                                        )
-                                  )
-                              )
-                            ),
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      )))),
                         ),
                       )
                     ],
                   ),
                 ),
               ),
-              ),
+            ),
             // Camera view
-
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Placeholder(
+                  fallbackHeight: 128,
+                  fallbackWidth: 72,
+                ),
+              ),
+            ),
             // Card
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                "Bonjour",
+                style: GoogleFonts.lexendDeca(
+                  fontSize: 30.0,
+                  color: Colors.black,
+                ),
+              ),
+            )
           ],
         ),
       ),
