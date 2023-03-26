@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offset += plane.bytes.length;
           }
           socket.add(bytes);
-          socket.close();
+          //socket.close();
         });
       } catch (e) {
         print('Error socket: $e');
