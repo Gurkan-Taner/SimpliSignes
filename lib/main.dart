@@ -16,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blueGrey
-      ),
+      theme: ThemeData(primarySwatch: Colors.blueGrey),
       home: const MyHomePage(title: 'SimpliSignes'),
     );
   }
@@ -46,7 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    cameraController = CameraController(_cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front), ResolutionPreset.high, enableAudio: false);
+    cameraController = CameraController(
+        _cameras.firstWhere(
+            (camera) => camera.lensDirection == CameraLensDirection.front),
+        ResolutionPreset.low,
+        enableAudio: false);
     cameraController.initialize().then((_) async {
       if (!mounted) {
         return;
@@ -66,16 +68,42 @@ class _MyHomePageState extends State<MyHomePage> {
           socket.destroy();
         });
         */
-        cameraController.startImageStream((CameraImage image) {
-          Uint8List bytes = Uint8List(image.planes.fold(0, (prev, next) => prev + next.bytes.length));
-          int offset = 0;
+        bool sendDimension = true;
+        Uint8List delimiter = Uint8List.fromList(
+            [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+        cameraController.startImageStream((CameraImage image) async {
+          int y_plane_length = image.planes[0].bytes.length;
+          int uv_plane_length = (image.width * image.height) ~/ 4;
+          Uint8List bytes = Uint8List(y_plane_length + 2 * uv_plane_length);
+
+          // Set the Y plane
+          bytes.setRange(0, y_plane_length, image.planes[0].bytes);
+
+          // Set the U plane, cropping the extra data
+          bytes.setRange(y_plane_length, y_plane_length + uv_plane_length,
+              image.planes[1].bytes.sublist(0, uv_plane_length));
+
+          // Set the V plane, cropping the extra data
+          bytes.setRange(
+              y_plane_length + uv_plane_length,
+              y_plane_length + 2 * uv_plane_length,
+              image.planes[2].bytes.sublist(0, uv_plane_length));
+
           // Send the frame dimensions after connecting to the server
-          socket.add(intToBytes(image.width, 4, Endian.big)); // Send the frame width (4 bytes)
-          socket.add(intToBytes(image.height, 4, Endian.big)); // Send the frame height (4 bytes)
-          for (var plane in image.planes) {
-            bytes.setRange(offset, offset + plane.bytes.length, plane.bytes);
-            offset += plane.bytes.length;
+          if (sendDimension) {
+            socket.add(intToBytes(
+                image.width, 4, Endian.big)); // Send the frame width (4 bytes)
+            socket.add(intToBytes(image.height, 4,
+                Endian.big)); // Send the frame height (4 bytes)
+            sendDimension = false;
           }
+
+          int yuv_data_length = bytes.length;
+
+          // Send the length of the YUV data
+          socket.add(intToBytes(yuv_data_length, 4, Endian.big));
+
+          // Send the YUV data
           socket.add(bytes);
           //socket.close();
         });
@@ -86,10 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-          // Handle access errors here.
+            // Handle access errors here.
             break;
           default:
-          // Handle other errors here.
+            // Handle other errors here.
             break;
         }
       }
@@ -104,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if(!cameraController.value.isInitialized){
+    if (!cameraController.value.isInitialized) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -125,10 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: const Color.fromRGBO(255, 255, 255, 0.3),
-                        width: 2.0
-                    ),
-                    borderRadius: BorderRadius.circular(25.0)
-                ),
+                        width: 2.0),
+                    borderRadius: BorderRadius.circular(25.0)),
                 clipBehavior: Clip.hardEdge,
                 child: CameraPreview(cameraController),
               ),
@@ -141,9 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(20),
               child: TextField(
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Bonjour"
-                ),
+                    border: OutlineInputBorder(), hintText: "Bonjour"),
                 controller: outputController,
                 readOnly: true,
               ),
@@ -153,5 +177,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 }
