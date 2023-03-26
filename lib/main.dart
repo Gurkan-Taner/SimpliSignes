@@ -69,6 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         */
         bool sendDimension = true;
+        socket.listen((List<int> event) {
+          String message = utf8.decode(event);
+          print("Message from server: $message");
+        });
         Uint8List delimiter = Uint8List.fromList(
             [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
         cameraController.startImageStream((CameraImage image) async {
