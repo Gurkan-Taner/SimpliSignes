@@ -37,6 +37,12 @@ class _MyHomePageState extends State<MyHomePage> {
   late CameraController cameraController;
   late Socket socket;
 
+  Uint8List intToBytes(int value, int byteCount, Endian endian) {
+    final data = ByteData(byteCount);
+    data.setInt32(0, value, endian);
+    return data.buffer.asUint8List();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
         cameraController.startImageStream((CameraImage image) {
           Uint8List bytes = Uint8List(image.planes.fold(0, (prev, next) => prev + next.bytes.length));
           int offset = 0;
+          // Send the frame dimensions after connecting to the server
+          socket.add(intToBytes(image.width, 4, Endian.big)); // Send the frame width (4 bytes)
+          socket.add(intToBytes(image.height, 4, Endian.big)); // Send the frame height (4 bytes)
           for (var plane in image.planes) {
             bytes.setRange(offset, offset + plane.bytes.length, plane.bytes);
             offset += plane.bytes.length;
