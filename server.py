@@ -7,8 +7,8 @@ from PIL import Image
 from tensorflow import keras
 from matplotlib import pyplot as plt
 
-HOST = "192.168.208.153"
-PORT = 8123
+HOST = "192.168.0.18"
+PORT = 65432
 
 def recvall(sock, n):
     data = bytearray()

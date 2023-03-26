@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:camera/camera.dart';
+import 'dart:convert';
 
 class TranslatePage extends StatefulWidget {
   const TranslatePage({required this.cameras, required this.stf, Key? key}) : super(key: key);
@@ -15,6 +18,13 @@ class _TranslatePageState extends State<TranslatePage> {
   late CameraController cameraController;
   late String first;
   late String second;
+  late Socket socket;
+
+  Uint8List intToBytes(int value, int byteCount, Endian endian) {
+    final data = ByteData(byteCount);
+    data.setInt32(0, value, endian);
+    return data.buffer.asUint8List();
+  }
 
   @override
   void initState() {
@@ -27,6 +37,67 @@ class _TranslatePageState extends State<TranslatePage> {
         return;
       }
       setState(() {});
+      try {
+        socket = await Socket.connect('192.168.0.18', 65432);
+        /*
+        print("connected to socket");
+        socket.write('Hello from Flutter!');
+        socket.listen((data) {
+          print('Received: ${String.fromCharCodes(data)}');
+          socket.destroy();
+        });
+        */
+        bool sendDimension = true;
+        socket.listen((List<int> event) {
+          String message = utf8.decode(event);
+          print("Message from server: $message");
+        });
+        Uint8List delimiter = Uint8List.fromList(
+            [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+        cameraController.startImageStream((CameraImage image) async {
+          int y_plane_length = image.planes[0].bytes.length;
+          int uv_plane_length = (image.width * image.height) ~/ 4;
+          Uint8List bytes = Uint8List(y_plane_length + 2 * uv_plane_length);
+
+          // Set the Y plane
+          bytes.setRange(0, y_plane_length, image.planes[0].bytes);
+
+          // Set the U plane, cropping the extra data
+          bytes.setRange(y_plane_length, y_plane_length + uv_plane_length,
+              image.planes[1].bytes.sublist(0, uv_plane_length));
+
+          // Set the V plane, cropping the extra data
+          bytes.setRange(
+              y_plane_length + uv_plane_length,
+              y_plane_length + 2 * uv_plane_length,
+              image.planes[2].bytes.sublist(0, uv_plane_length));
+
+          // Send the frame dimensions after connecting to the server
+          if (sendDimension) {
+            socket.add(intToBytes(
+                image.width, 4, Endian.big)); // Send the frame width (4 bytes)
+            socket.add(intToBytes(image.height, 4,
+                Endian.big)); // Send the frame height (4 bytes)
+            sendDimension = false;
+          }
+
+          int yuv_data_length = bytes.length;
+
+          // Send the length of the YUV data
+          socket.add(intToBytes(yuv_data_length, 4, Endian.big));
+
+          // Send the YUV data
+          socket.add(bytes);
+          //socket.close();
+
+          // Listen socket
+          socket.listen((data) {
+            print('Received: ${String.fromCharCodes(data)}');
+          });
+        });
+      } catch (e) {
+        print('Error socket: $e');
+      }
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {

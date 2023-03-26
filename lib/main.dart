@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-
-late List<CameraDescription> _cameras;
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  _cameras = await availableCameras();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
-      home: const MyHomePage(title: 'SimpliSignes'),
-=======
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import './screen/MainPage.dart';
@@ -54,13 +32,22 @@ class MyApp extends StatelessWidget {
       ),
       //home: TranslatePage(cameras: cameras),
       home: MainPage(cameras: cameras),
->>>>>>> origin/front_implementation
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
   final String title;
 
   @override
@@ -68,154 +55,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final outputController = TextEditingController();
-  late CameraController cameraController;
-  late Socket socket;
+  int _counter = 0;
 
-  Uint8List intToBytes(int value, int byteCount, Endian endian) {
-    final data = ByteData(byteCount);
-    data.setInt32(0, value, endian);
-    return data.buffer.asUint8List();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    cameraController = CameraController(
-        _cameras.firstWhere(
-            (camera) => camera.lensDirection == CameraLensDirection.front),
-        ResolutionPreset.low,
-        enableAudio: false);
-    cameraController.initialize().then((_) async {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-      /*
-      await cameraController.startImageStream((CameraImage availableImage) async {
-        print(availableImage.format.raw);
-      });*/
-      try {
-        socket = await Socket.connect('192.168.208.153', 8123);
-        /*
-        print("connected to socket");
-        socket.write('Hello from Flutter!');
-        socket.listen((data) {
-          print('Received: ${String.fromCharCodes(data)}');
-          socket.destroy();
-        });
-        */
-        bool sendDimension = true;
-        socket.listen((List<int> event) {
-          String message = utf8.decode(event);
-          print("Message from server: $message");
-        });
-        Uint8List delimiter = Uint8List.fromList(
-            [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
-        cameraController.startImageStream((CameraImage image) async {
-          int y_plane_length = image.planes[0].bytes.length;
-          int uv_plane_length = (image.width * image.height) ~/ 4;
-          Uint8List bytes = Uint8List(y_plane_length + 2 * uv_plane_length);
-
-          // Set the Y plane
-          bytes.setRange(0, y_plane_length, image.planes[0].bytes);
-
-          // Set the U plane, cropping the extra data
-          bytes.setRange(y_plane_length, y_plane_length + uv_plane_length,
-              image.planes[1].bytes.sublist(0, uv_plane_length));
-
-          // Set the V plane, cropping the extra data
-          bytes.setRange(
-              y_plane_length + uv_plane_length,
-              y_plane_length + 2 * uv_plane_length,
-              image.planes[2].bytes.sublist(0, uv_plane_length));
-
-          // Send the frame dimensions after connecting to the server
-          if (sendDimension) {
-            socket.add(intToBytes(
-                image.width, 4, Endian.big)); // Send the frame width (4 bytes)
-            socket.add(intToBytes(image.height, 4,
-                Endian.big)); // Send the frame height (4 bytes)
-            sendDimension = false;
-          }
-
-          int yuv_data_length = bytes.length;
-
-          // Send the length of the YUV data
-          socket.add(intToBytes(yuv_data_length, 4, Endian.big));
-
-          // Send the YUV data
-          socket.add(bytes);
-          //socket.close();
-        });
-      } catch (e) {
-        print('Error socket: $e');
-      }
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            // Handle access errors here.
-            break;
-          default:
-            // Handle other errors here.
-            break;
-        }
-      }
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
     });
   }
 
   @override
-  void dispose() {
-    cameraController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (!cameraController.value.isInitialized) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
         child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Container(
-                width: MediaQuery.of(context).size.width - 10,
-                height: MediaQuery.of(context).size.height / 1.6,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: const Color.fromRGBO(255, 255, 255, 0.3),
-                        width: 2.0),
-                    borderRadius: BorderRadius.circular(25.0)),
-                clipBehavior: Clip.hardEdge,
-                child: CameraPreview(cameraController),
-              ),
-            ),
             const Text(
-              'Français',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              'You have pushed the button this many times:',
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), hintText: "Bonjour"),
-                controller: outputController,
-                readOnly: true,
-              ),
-            )
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
