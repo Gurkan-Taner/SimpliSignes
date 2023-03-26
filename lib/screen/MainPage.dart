@@ -1,8 +1,11 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simplisignes/screen/TranslatePage.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+  const MainPage({required this.cameras, Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +67,13 @@ class MainPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                     child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => TranslatePage(cameras: this.cameras, stf: true),
+                          ),
+                        );
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: size.height / 5,
@@ -104,6 +114,13 @@ class MainPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                     child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TranslatePage(cameras: this.cameras, stf: false),
+                          ),
+                        );
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: size.height / 5,

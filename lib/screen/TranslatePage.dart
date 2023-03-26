@@ -1,12 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:camera/camera.dart';
 
-class TranslatePage extends StatelessWidget {
-  const TranslatePage({super.key});
+class TranslatePage extends StatefulWidget {
+  const TranslatePage({required this.cameras, required this.stf, Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  final bool stf;
+
+  @override
+  State<TranslatePage> createState() => _TranslatePageState();
+}
+
+class _TranslatePageState extends State<TranslatePage> {
+  late CameraController cameraController;
+  late String first;
+  late String second;
+
+  @override
+  void initState() {
+    super.initState();
+    first = widget.stf ? "LSF" : "Français";
+    second = widget.stf ?"Français" : "LSF";
+    cameraController = CameraController(widget.cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front), ResolutionPreset.high, enableAudio: false);
+    cameraController.initialize().then((_) async {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+          // Handle access errors here.
+            break;
+          default:
+          // Handle other errors here.
+            break;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    cameraController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    if(!cameraController.value.isInitialized){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -65,7 +114,7 @@ class TranslatePage extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Padding(
                                   padding: EdgeInsets.all(5.0),
-                                  child: Text("LSF",
+                                  child: Text(first,
                                       style: GoogleFonts.lexendDeca(
                                         fontSize: 20.0,
                                         color: Colors.white,
@@ -74,8 +123,11 @@ class TranslatePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.all(5.0),
-                        child: Image(
-                          image: AssetImage('assets/images/switch.png'),
+                        child: InkWell(
+                          onTap: _onTapSwitch,
+                          child: Image(
+                            image: AssetImage('assets/images/switch.png'),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -88,7 +140,7 @@ class TranslatePage extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Padding(
                                   padding: EdgeInsets.all(5.0),
-                                  child: Text("Français",
+                                  child: Text(second,
                                       style: GoogleFonts.lexendDeca(
                                         fontSize: 20.0,
                                         color: Colors.white,
@@ -104,10 +156,7 @@ class TranslatePage extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Placeholder(
-                  fallbackHeight: 128,
-                  fallbackWidth: 72,
-                ),
+                child: CameraPreview(cameraController),
               ),
             ),
             // Card
@@ -125,5 +174,13 @@ class TranslatePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTapSwitch() {
+    setState(() {
+      String temp = first;
+      first = second;
+      second = temp;
+    });
   }
 }

@@ -1,19 +1,23 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import './screen/MainPage.dart';
 import './screen/TranslatePage.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  runApp(MyApp(cameras: cameras));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({required this.cameras, Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'SimpliSignes',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,7 +30,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const TranslatePage(),
+      //home: TranslatePage(cameras: cameras),
+      home: MainPage(cameras: cameras),
     );
   }
 }
