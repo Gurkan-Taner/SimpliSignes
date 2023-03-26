@@ -5,32 +5,22 @@ packages:
     dependency: transitive
     description:
       name: async
-      sha256: "271b8899fc99f9df4f4ed419fa14e2fff392c7b2c162fbb87b222e2e963ddc73"
+      sha256: bfe67ef28df125b7dddcea62755991f807aa39a2492a23e1550161692950bbe0
       url: "https://pub.dev"
     source: hosted
-    version: "2.9.0"
+    version: "2.10.0"
   boolean_selector:
     dependency: transitive
     description:
       name: boolean_selector
-      sha256: "5bbf32bc9e518d41ec49718e2931cd4527292c9b0c6d2dffcf7fe6b9a8a8cf72"
+      sha256: "6cfb5af12253eaf2b368f07bacc5a80d1301a071c73360d746b7f2e32d762c66"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "2.1.0"
-=======
     version: "2.1.1"
->>>>>>> origin/front_implementation
   camera:
     dependency: "direct main"
     description:
       name: camera
-<<<<<<< HEAD
-      sha256: "917dcdb70a83e36240881344caed7e5b270afe956a13d8873f17e196ba155602"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.3+1"
-=======
       sha256: ad1c53c554a2f3e5708f3b01eb738d60b902bb61f7f4ad420c65c715e65a7379
       url: "https://pub.dev"
     source: hosted
@@ -51,7 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.13+1"
->>>>>>> origin/front_implementation
   camera_platform_interface:
     dependency: transitive
     description:
@@ -60,8 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
-<<<<<<< HEAD
-=======
   camera_web:
     dependency: transitive
     description:
@@ -70,7 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1+3"
->>>>>>> origin/front_implementation
   characters:
     dependency: transitive
     description:
@@ -91,14 +77,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: ef7e3a5529178ce8f37a9d0b11cbbc8b1e025940f9cf9f76c42da6796301219d
+      sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "1.16.0"
-=======
     version: "1.17.0"
->>>>>>> origin/front_implementation
   cross_file:
     dependency: transitive
     description:
@@ -107,8 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+4"
-<<<<<<< HEAD
-=======
   crypto:
     dependency: transitive
     description:
@@ -117,7 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
->>>>>>> origin/front_implementation
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -126,14 +105,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  dart_webrtc:
-    dependency: transitive
-    description:
-      name: dart_webrtc
-      sha256: a8244b36b6b673649f489f4f13a011e6fb029de678f6c606dc3f072a088b6ea8
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.15"
   fake_async:
     dependency: transitive
     description:
@@ -184,16 +155,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
-  flutter_webrtc:
-    dependency: "direct main"
-    description:
-      name: flutter_webrtc
-      sha256: "4eacac1b49c65fd225ea69f41b3c28fae55c1f2caba6d5f21a6de2bd43e6dc02"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.24"
-=======
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -223,7 +184,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
->>>>>>> origin/front_implementation
   js:
     dependency: transitive
     description:
@@ -244,10 +204,10 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: "80c2989398773fa06e2457e9ff08580f24e9858b28462a722241cb53e5613478"
+      sha256: "16db949ceee371e9b99d22f88fa3a73c4e59fd0afed0bd25fc336eb76c198b72"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.12"
+    version: "0.12.13"
   material_color_utilities:
     dependency: transitive
     description:
@@ -320,17 +280,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
-<<<<<<< HEAD
-  pedantic:
-    dependency: transitive
-    description:
-      name: pedantic
-      sha256: "67fc27ed9639506c856c840ccce7594d0bdcd91bc8d53d6e52359449a1d50602"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.11.1"
-=======
->>>>>>> origin/front_implementation
   platform:
     dependency: transitive
     description:
@@ -339,17 +288,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-<<<<<<< HEAD
-  platform_detect:
-    dependency: transitive
-    description:
-      name: platform_detect
-      sha256: "14afcb6ffcd93745e39a288db53d1d6522ea25d71f7993c13a367a86c437b54d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
-=======
->>>>>>> origin/front_implementation
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -366,17 +304,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
-<<<<<<< HEAD
-  pub_semver:
-    dependency: transitive
-    description:
-      name: pub_semver
-      sha256: "307de764d305289ff24ad257ad5c5793ce56d04947599ad68b3baa124105fc17"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.3"
-=======
->>>>>>> origin/front_implementation
   quiver:
     dependency: transitive
     description:
@@ -402,22 +329,18 @@ packages:
     dependency: transitive
     description:
       name: stack_trace
-      sha256: f8d9f247e2f9f90e32d1495ff32dac7e4ae34ffa7194c5ff8fcc0fd0e52df774
+      sha256: c3c7d8edb15bee7f0f74debd4b9c5f3c2ea86766fe4178eb2a18eb30a0bdaed5
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.0"
+    version: "1.11.0"
   stream_channel:
     dependency: transitive
     description:
       name: stream_channel
-      sha256: db47e4797198ee601990820437179bb90219f918962318d494ada2b4b11e6f6d
+      sha256: "83615bee9045c1d322bbbd1ba209b7a749c2cbcdcb3fdd1df8eb488b3279c1c8"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "2.1.0"
-=======
     version: "2.1.1"
->>>>>>> origin/front_implementation
   stream_transform:
     dependency: transitive
     description:
@@ -430,10 +353,10 @@ packages:
     dependency: transitive
     description:
       name: string_scanner
-      sha256: "862015c5db1f3f3c4ea3b94dc2490363a84262994b88902315ed74be1155612f"
+      sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -446,12 +369,9 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: b3d8b74cfb0d09438b35d0906c9acd049c5fb631bde55446e90153bf983e223d
+      sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "0.4.13"
-=======
     version: "0.4.16"
   typed_data:
     dependency: transitive
@@ -461,27 +381,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
->>>>>>> origin/front_implementation
   vector_math:
     dependency: transitive
     description:
       name: vector_math
-      sha256: bcf21e8cb927e9db17527b36980cbfdac70aed245b6495aa2712f7566837c7b0
+      sha256: "80b3257d1492ce4d091729e3a67a60407d227c27241d6927be0130c98e741803"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "2.1.3"
-  webrtc_interface:
-    dependency: transitive
-    description:
-      name: webrtc_interface
-      sha256: fb79e2dbf594a61bfeed6dc52fa3209d63594ac59930043a9e98371d2d40000c
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.11"
-=======
     version: "2.1.4"
->>>>>>> origin/front_implementation
   win32:
     dependency: transitive
     description:
@@ -500,8 +407,4 @@ packages:
     version: "1.0.0"
 sdks:
   dart: ">=2.19.5 <3.0.0"
-<<<<<<< HEAD
-  flutter: ">=3.0.0"
-=======
   flutter: ">=3.3.0"
->>>>>>> origin/front_implementation
