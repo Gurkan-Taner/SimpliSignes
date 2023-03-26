@@ -2,7 +2,7 @@ import socket
 import cv2
 import numpy as np
 
-HOST = "192.168.226.104"
+HOST = "192.168.208.153"
 PORT = 8123
 
 def recvall(sock, n):

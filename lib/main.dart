@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(availableImage.format.raw);
       });*/
       try {
-        socket = await Socket.connect('192.168.0.36', 8123);
+        socket = await Socket.connect('192.168.208.153', 8123);
         /*
         print("connected to socket");
         socket.write('Hello from Flutter!');
